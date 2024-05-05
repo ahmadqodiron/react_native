@@ -41,7 +41,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={MyTabs} />
+        <Stack.Screen name="Home" component={MyTabs} options={{headerShown:false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
