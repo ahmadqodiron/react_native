@@ -1,14 +1,41 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React from 'react';
+import { View, Text, Image, StyleSheet } from 'react-native';
 
-const setelan = () => {
+const Setelan = () => {
   return (
-    <View>
-      <Text>setelan</Text>
+    <View style={styles.container}>
+      <Image
+        style={styles.avatar}
+        source={require('../images/logo.jpg')}
+      />
+      <Text style={[styles.username, { color: 'blue' }]}>Lanceng Tresna</Text>
+      <Text style={[styles.bio, { color: 'gray' }]}>Daol Madura Pamekasan</Text>
     </View>
-  )
-}
+  );
+};
 
-export default setelan
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatar: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    marginBottom: 20,
+  },
+  username: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#fff',
+  },
+  bio: {
+    fontSize: 16,
+    textAlign: 'center',
+  },
+});
 
-const styles = StyleSheet.create({})
+export default Setelan;
