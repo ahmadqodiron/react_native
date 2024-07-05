@@ -8,7 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Beranda from './screens/Beranda';
 
 import Setelan from './screens/Setelan';
-import Notifikasi from './screens/Notifikasi';
+import Album from './screens/Album';
 import BookingDetails from './screens/BookingDetails'; // Sesuaikan dengan path file Anda
 
 const Tab = createBottomTabNavigator();
@@ -23,8 +23,8 @@ function MyTabs() {
             <MaterialCommunityIcons name="home" color={color} size={26} />
           ),
         }}/>
-      <Tab.Screen name="Album" component={Notifikasi} options={{
-          tabBarLabel: 'Album',
+      <Tab.Screen name="Album" component={Album} options={{
+          tabBarLabel: 'Album', headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="album" color={color} size={26} />
           ),
