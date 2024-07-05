@@ -9,6 +9,7 @@ import Beranda from './screens/Beranda';
 
 import Setelan from './screens/Setelan';
 import Notifikasi from './screens/Notifikasi';
+import BookingDetails from './screens/BookingDetails'; // Sesuaikan dengan path file Anda
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -17,15 +18,15 @@ function MyTabs() {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Beranda" component={Beranda} options={{
-          tabBarLabel: 'Beranda',
+          tabBarLabel: 'Beranda', headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
           ),
         }}/>
-      <Tab.Screen name="Notifikasi" component={Notifikasi} options={{
-          tabBarLabel: 'Notifikasi',
+      <Tab.Screen name="Album" component={Notifikasi} options={{
+          tabBarLabel: 'Album',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="bell" color={color} size={26} />
+            <MaterialCommunityIcons name="album" color={color} size={26} />
           ),
         }}/>
       <Tab.Screen name="Setelan" component={Setelan}options={{
@@ -42,6 +43,7 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={MyTabs} options={{headerShown:false}}/>
+        <Stack.Screen name="BookingDetails" component={BookingDetails} />
       </Stack.Navigator>
     </NavigationContainer>
   );
