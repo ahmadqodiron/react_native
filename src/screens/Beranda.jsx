@@ -1,81 +1,62 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Modal, TextInput, Button } from 'react-native';
+import { StyleSheet, View, Text, FlatList, Image, Switch, useColorScheme } from 'react-native';
 
-const data = [
-  { id: '1', name: 'Pemesanan 1', date: '2023-07-01', purchaseOrder: 'PO-001' },
-  { id: '2', name: 'Pemesanan 2', date: '2023-07-02', purchaseOrder: 'PO-002' },
-  // Tambahkan data pemesanan lain di sini
+const productsData = [
+  { id: 1, name: 'Manggung', image: require('../assets/images/gambar1.jpeg'), price: 'Rp 2,000,000/Show' },
+  { id: 2, name: '+Dekorasi Pagi', image: require('../assets/images/gambar2.jpeg'), price: 'Rp 3,000,000/Show' },
+  { id: 3, name: '+Dekorasi Malam', image: require('../assets/images/gambar3.jpeg'), price: 'Rp 3,500,000/Show' },
+  { id: 4, name: 'Sewa Penari 2', image: require('../assets/images/gambar4.jpeg'), price: 'Rp 1,000,000/Show' },
+  { id: 5, name: 'Sewa Penari 3', image: require('../assets/images/gambar5.jpeg'), price: 'Rp 1,500,000/Show' },
+  // Tambahkan produk lainnya sesuai kebutuhan
 ];
 
-const Beranda = ({ navigation }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [newPurchaseOrder, setNewPurchaseOrder] = useState('');
+const ProductItem = ({ product }) => {
+  const isDarkMode = useColorScheme() === 'dark';
 
-  const renderItem = ({ item }) => (
-    <View>
-      <TouchableOpacity 
-        style={styles.itemContainer} 
-        onPress={() => navigation.navigate('BookingDetails', { item })}>
-        <Text style={styles.itemName}>{item.name}</Text>
-        <Text style={styles.itemDate}>{item.date}</Text>
-        <Text style={styles.itemPurchaseOrder}>PO: {item.purchaseOrder}</Text>
-        <TouchableOpacity 
-          style={styles.editButton}
-          onPress={() => {
-            setSelectedItem(item);
-            setNewPurchaseOrder(item.purchaseOrder);
-            setModalVisible(true);
-          }}>
-          <Text style={styles.editButtonText}>Ubah PO</Text>
-        </TouchableOpacity>
-      </TouchableOpacity>
+  return (
+    <View style={[styles.productItem, { backgroundColor: isDarkMode ? '#333' : '#f0f0f0' }]}>
+      <Image source={product.image} style={styles.productImage} />
+      <Text style={[styles.productName, { color: isDarkMode ? '#fff' : '#000' }]}>{product.name}</Text>
+      <Text style={[styles.productPrice, { color: isDarkMode ? '#fff' : '#000' }]}>{product.price}</Text>
     </View>
   );
+};
 
-  const handleSavePurchaseOrder = () => {
-    // Lakukan validasi atau pemrosesan lainnya di sini sebelum menyimpan
-    // Misalnya, jika menggunakan state management atau API untuk menyimpan data
-    // Di sini hanya menampilkan log untuk demonstrasi
-    console.log(`Simpan PO baru untuk ${selectedItem.name}: ${newPurchaseOrder}`);
-    setModalVisible(false);
+const Beranda = () => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Beranda Pemesanan</Text>
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
-      <TouchableOpacity 
-        style={styles.addButton}
-        onPress={() => navigation.navigate('AddBooking')}>
-        <Text style={styles.addButtonText}>Tambah Pemesanan</Text>
-      </TouchableOpacity>
-
-      {/* Modal untuk mengubah Purchase Order */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(false);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <TextInput
-              style={styles.input}
-              placeholder="Masukkan Purchase Order baru"
-              value={newPurchaseOrder}
-              onChangeText={text => setNewPurchaseOrder(text)}
-            />
-            <Button title="Simpan" onPress={handleSavePurchaseOrder} />
-          </View>
+    <View style={[styles.container, { backgroundColor: isDarkMode ? '#333' : '#fff' }]}>
+      <View style={styles.headerContainer}>
+        <Image
+          source={require('../assets/images/Hanabi.jpg')}
+          style={styles.bannerImage}
+          resizeMode="cover"
+        />
+        <View style={styles.darkModeButton}>
+          <Switch
+            value={isDarkMode}
+            onValueChange={toggleDarkMode}
+            trackColor={{ false: "#767577", true: "#81b0ff" }}
+            thumbColor={isDarkMode ? "#f5dd4b" : "#f4f3f4"}
+            ios_backgroundColor="#3e3e3e"
+            style={{ transform: [{ scaleX: 1.3 }, { scaleY: 1.3 }] }}
+          />
         </View>
-      </Modal>
+      </View>
+      <View style={styles.header}>
+        <Text style={[styles.headerText, { color: isDarkMode ? '#fff' : '#000' }]}>Penyewaan Musik Daul</Text>
+      </View>
+      <FlatList
+        data={productsData}
+        renderItem={({ item }) => <ProductItem product={item} />}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={styles.productList}
+      />
     </View>
   );
 };
@@ -83,89 +64,64 @@ const Beranda = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    backgroundColor: '#f0f8ff', // Warna latar belakang biru muda
+    backgroundColor: '#fff',
+  },
+  headerContainer: {
+    position: 'relative',
+  },
+  bannerImage: {
+    width: '100%',
+    height: 200,
+    marginBottom: 10,
+  },
+  darkModeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#000',
+    borderRadius: 10,
   },
   header: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  headerText: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 16,
-    color: '#333', // Warna teks header
+    paddingTop: 10,
   },
-  itemContainer: {
-    padding: 16,
-    marginBottom: 8,
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 1 },
-    shadowRadius: 3,
-    elevation: 2,
-  },
-  itemName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#007BFF', // Warna teks nama item
-  },
-  itemDate: {
-    fontSize: 14,
-    color: '#666', // Warna teks tanggal item
-  },
-  itemPurchaseOrder: {
-    fontSize: 16,
-    color: '#555', // Warna teks Purchase Order
-    marginTop: 8,
-  },
-  editButton: {
-    backgroundColor: '#ffc107', // Warna tombol kuning
-    padding: 8,
-    borderRadius: 4,
-    marginTop: 8,
-    alignSelf: 'flex-start',
-  },
-  editButtonText: {
-    color: '#333',
-    fontSize: 14,
-  },
-  addButton: {
-    backgroundColor: '#28a745', // Warna tombol hijau
-    padding: 16,
-    borderRadius: 8,
+  productList: {
     alignItems: 'center',
-    marginTop: 16,
   },
-  addButtonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modalView: {
-    backgroundColor: 'white',
-    borderRadius: 8,
-    padding: 16,
+  productItem: {
+    marginBottom: 20,
+    borderRadius: 10,
+    width: 300,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: '#f0f0f0',
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
     elevation: 5,
-    minWidth: 300,
   },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 16,
-    paddingHorizontal: 8,
+  productImage: {
+    width: '100%',
+    height: 150,
+    borderRadius: 10,
+    resizeMode: 'cover',
+  },
+  productName: {
+    paddingVertical: 10,
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  productPrice: {
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 

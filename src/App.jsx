@@ -9,7 +9,8 @@ import Beranda from './screens/Beranda';
 
 import Setelan from './screens/Setelan';
 import Album from './screens/Album';
-import BookingDetails from './screens/BookingDetails'; // Sesuaikan dengan path file Anda
+import BookingDetails from './screens/BookingDetails';
+import AddBooking from './screens/TambahBoking';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -30,7 +31,7 @@ function MyTabs() {
           ),
         }}/>
       <Tab.Screen name="Setelan" component={Setelan}options={{
-          tabBarLabel: 'Setelan',
+          tabBarLabel: 'Setelan', headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="cog" color={color} size={26} />
           ),
@@ -44,6 +45,7 @@ function App() {
       <Stack.Navigator>
         <Stack.Screen name="Home" component={MyTabs} options={{headerShown:false}}/>
         <Stack.Screen name="BookingDetails" component={BookingDetails} />
+        <Stack.Screen name="AddBooking" component={AddBooking} />
       </Stack.Navigator>
     </NavigationContainer>
   );
